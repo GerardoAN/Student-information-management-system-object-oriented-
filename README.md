@@ -30,7 +30,7 @@ python student_management.py
 代码架构解析
 核心模块设计
 python
-# 数据持久化模块（网页3]
+# 数据持久化模块
 def save_data_to_file():
     with open("data.txt", "w", encoding="utf-8") as f:  # 使用with语句确保文件关闭
         f.write(str(students))  # 将列表直接序列化为字符串存储
@@ -42,7 +42,7 @@ def load_data():
             students = eval(f.read())  # 使用eval反序列化需注意安全风险
 功能实现亮点
 python
-# 交互式菜单系统（网页8]
+# 交互式菜单系统
 def menu():
     print('-' * 40)  # 使用字符画美化界面
     print('[1] 添加学生信息'.ljust(25) + '[6] 保存数据到文件')
