@@ -1,62 +1,84 @@
-飞机大战游戏 🛩️ https://img.shields.io/badge/license-MIT-blue.svg
-基于Pygame开发的经典2D射击游戏，通过方向键控制战机移动，空格键发射三连发子弹击落敌机。本项目包含完整的游戏循环、碰撞检测和爆炸动画系统，适合Python初学者学习游戏开发基础。
+学生管理系统 V1.0 📚 https://img.shields.io/badge/License-MIT-yellow.svg
+基于Python开发的命令行学生信息管理系统，支持学生数据的增删改查、持久化存储与加载功能。本系统采用模块化设计，适合用于Python学习者实践基础语法和文件操作。
 
-./images/game_screenshot.png
+./images/demo.png
 
 功能特性
-​玩家控制系统：支持方向键（↑↓←→）实时操控战机移动
-​智能敌机AI：敌机自动左右移动并触碰边界转向
-​三连发子弹系统：按空格键触发多弹道攻击
-​碰撞检测机制：精确判断子弹与敌机的碰撞区域
-​爆炸动画序列：6帧高清爆破特效（含资源文件）
-​流畅游戏循环：60FPS帧率保证游戏流畅性
-快速启动
-环境配置
+​交互式菜单系统：7项功能菜单循环交互，支持错误输入检测
+​数据管理核心功能：
+添加学生信息（姓名/年龄/地址）
+删除学生记录（按姓名匹配）
+修改学生全字段信息
+精准查询与全量遍历
+​持久化存储：
+数据自动加载（启动时读取data.txt）
+手动保存功能（将内存数据写入文件）
+​防御性设计：
+年龄字段强制类型验证（仅接受整数）
+空数据保存检测机制
+异常操作友好提示
+快速开始
+环境要求
 bash
-# 安装依赖库（推荐Pygame 2.1.3+）
-pip install -r requirements.txt  # 包含：pygame==2.1.3
-运行游戏
+Python 3.6+
+无需额外依赖
+运行步骤
 bash
-git clone https://github.com/你的用户名/飞机大战.git
-cd 飞机大战
-python aircraft_war.py
+git clone https://github.com/你的用户名/学生管理系统.git
+cd 学生管理系统
+python student_management.py
 代码架构解析
 核心模块设计
 python
-# 玩家战机控制（网页3]
-def hero_plane():
-    global hero_x, hero_y  # 使用全局坐标变量
-    # 事件监听处理WASD和空格键
-    # 子弹对象存储为字典列表结构
+# 数据持久化模块（网页3]
+def save_data_to_file():
+    with open("data.txt", "w", encoding="utf-8") as f:  # 使用with语句确保文件关闭
+        f.write(str(students))  # 将列表直接序列化为字符串存储
 
-# 敌机行为系统（网页2]
-def enemy_plane():
-    global enemy_x, enemy_path  # 自动移动路径计算
-    # 碰撞检测范围：x轴[enemy_x, enemy_x+165], y轴[0,265]
-    # 爆炸动画通过blow_up数组实现帧序列播放
-资源管理规范
+def load_data():
+    global students
+    try:  # 建议添加try-except块处理文件不存在情况
+        with open("data.txt", "r", encoding="utf-8") as f:
+            students = eval(f.read())  # 使用eval反序列化需注意安全风险
+功能实现亮点
 python
-# 资源加载规范（需创建aircraft_war_material目录）
-background = pygame.image.load("./aircraft_war_material/background.png") 
-hero = pygame.image.load("./aircraft_war_material/hero1.png")
-开发路线图
- 增加计分系统（击杀敌机得分）
- 实现多敌机生成器
- 添加音效管理系统
- 开发关卡难度递增机制
+# 交互式菜单系统（网页8]
+def menu():
+    print('-' * 40)  # 使用字符画美化界面
+    print('[1] 添加学生信息'.ljust(25) + '[6] 保存数据到文件')
+    # 支持7个功能选项的对称排版
+
+# 数据验证机制
+def add_student():
+    age = int(input("请输入年龄："))  # 强制类型转换配合try-except更佳
+    # 建议添加姓名非空校验
+项目演进建议
+​安全增强：
+使用json模块替代eval进行数据序列化（避免代码注入风险）
+添加密码验证模块（参考网页8的API安全设计）
+​功能扩展：
+增加学号唯一标识字段
+实现数据分页查看功能
+添加CSV/Excel导出能力（参考网页3的数据分析模块）
+​交互优化：
+采用curses库实现TUI界面
+添加颜色高亮提示（使用colorama库）
 注意事项
-必须保证资源文件目录结构完整
-建议屏幕分辨率为400x800像素
-游戏速度受time.sleep(0.01)控制，可调整该值改变节奏
-碰撞检测区域根据敌机素材尺寸(165x265)设定
+数据文件（data.txt）采用明文存储，建议：
+部署时修改文件权限（chmod 600）
+敏感信息需加密处理（如使用cryptography库）
+当前版本限制：
+不支持并发访问（全局变量students存在数据竞争风险）
+删除/查询功能仅支持精确姓名匹配（可扩展模糊搜索）
+输入验证建议：
+添加年龄范围校验（1-120岁）
+电话号码格式正则验证
 贡献指南
 欢迎通过Pull Request提交改进：
 
 Fork本仓库
-创建特性分支（如feature/enhance-collision）
+创建特性分支（如feat/add-search-filter）
 提交代码变更（需符合PEP8规范）
 发起Pull Request
 开源协议
-本项目采用 MIT License，允许自由使用及二次开发，但需保留原始版权声明。
-
-​学习提示：建议结合《Python核心应用》教程深入理解游戏循环和事件处理机制。开发时推荐使用PyCharm专业版进行调试，可利用其集成的Pygame调试工具加速开发流程。
+MIT License © 2023 开发者名称
